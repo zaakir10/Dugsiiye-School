@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - School Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class='bx bxs-school'></i>
+                    <span>EduAdmin</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="active"><i class='bx bxs-dashboard'></i>
+                            <span>Dashboard</span></a></li>
+                    <li><a href="students.html"><i class='bx bxs-graduation'></i> <span>Students</span></a></li>
+                    <li><a href="teachers.html"><i class='bx bxs-user-badge'></i> <span>Teachers</span></a></li>
+                    <li><a href="classes.html"><i class='bx bxs-book-open'></i> <span>Classes</span></a></li>
+                    <li><a href="subjects.html"><i class='bx bxs-book'></i> <span>Subjects</span></a></li>
+                    <li><a href="attendance.html"><i class='bx bxs-calendar-check'></i> <span>Attendance</span></a></li>
+                    <li><a href="exams.html"><i class='bx bxs-edit'></i> <span>Exams</span></a></li>
+                    <li><a href="results.html"><i class='bx bxs-bar-chart-alt-2'></i> <span>Results</span></a></li>
+                    <li><a href="fees.html"><i class='bx bxs-wallet'></i> <span>Fees</span></a></li>
+                    <li><a href="notices.html"><i class='bx bxs-megaphone'></i> <span>Notices</span></a></li>
+                    <li><a href="settings.html"><i class='bx bxs-cog'></i> <span>Settings</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" onclick="logout()" class="logout-btn"><i class='bx bx-log-out'></i> <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="page-title">
+                    <h2 id="pageTitle">Overview</h2>
+                </div>
+
+                <div class="top-actions">
+                    <div class="search-bar">
+                        <i class='bx bx-search'></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+
+                    <button class="icon-btn"><i class='bx bx-bell'></i><span class="badge">3</span></button>
+                    <button class="icon-btn" id="themeToggle"><i class='bx bx-moon'></i></button>
+
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin" alt="Profile" id="userAvatar">
+                        <div class="user-info">
+                            <span class="name" id="userName">Admin User</span>
+                            <span class="role" id="userRole">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="content-wrapper fade-in">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="card stat-card">
+                        <div class="stat-icon bg-blue"><i class='bx bxs-graduation'></i></div>
+                        <div class="stat-info">
+                            <h3>Total Students</h3>
+                            <p class="value" id="totalStudents">0</p>
+                        </div>
+                    </div>
+
+                    <div class="card stat-card">
+                        <div class="stat-icon bg-green"><i class='bx bxs-user-badge'></i></div>
+                        <div class="stat-info">
+                            <h3>Total Teachers</h3>
+                            <p class="value" id="totalTeachers">0</p>
+                        </div>
+                    </div>
+
+                    <div class="card stat-card">
+                        <div class="stat-icon bg-orange"><i class='bx bxs-book'></i></div>
+                        <div class="stat-info">
+                            <h3>Classes</h3>
+                            <p class="value" id="totalClasses">0</p>
+                        </div>
+                    </div>
+
+                    <div class="card stat-card">
+                        <div class="stat-icon bg-purple"><i class='bx bxs-wallet'></i></div>
+                        <div class="stat-info">
+                            <h3>Fees Revenue</h3>
+                            <p class="value" id="totalRevenue">$0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity & Charts -->
+                <div class="dashboard-grid">
+                    <div class="card recent-activity">
+                        <div class="card-header">
+                            <h3>Real-time Activity</h3>
+                            <button class="btn-text"
+                                onclick="localStorage.removeItem('sms_logs'); location.reload();">Clear</button>
+                        </div>
+                        <ul class="activity-list" id="recentActivityList">
+                            <li style="justify-content: center; padding: 2rem; color: var(--text-muted);">No recent logs
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card recent-activity">
+                        <div class="card-header">
+                            <h3>Upcoming Exams</h3>
+                            <button class="btn-text" onclick="window.location.href='exams.html'">View All</button>
+                        </div>
+                        <ul class="activity-list" id="upcomingExamsList">
+                            <li style="justify-content: center; padding: 2rem; color: var(--text-muted);">Loading...
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card recent-activity">
+                        <div class="card-header">
+                            <h3>Latest Notices</h3>
+                            <button class="btn-text" onclick="window.location.href='notices.html'">View All</button>
+                        </div>
+                        <ul class="activity-list" id="latestNoticesList">
+                            <li style="justify-content: center; padding: 2rem; color: var(--text-muted);">Loading...
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card quick-actions">
+                        <div class="card-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="window.location.href='students.html'"><i
+                                    class='bx bx-plus'></i> Add Student</button>
+                            <button class="action-btn" onclick="window.location.href='fees.html'"><i
+                                    class='bx bx-money'></i> Collect Fees</button>
+                            <button class="action-btn" onclick="window.location.href='exams.html'"><i
+                                    class='bx bx-calendar'></i> Schedule Exam</button>
+                            <button class="action-btn" onclick="window.location.href='notices.html'"><i
+                                    class='bx bx-envelope'></i> Send Notice</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Attendance Status</h3>
+                        </div>
+                        <div style="padding: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Present Today</span>
+                                <span id="presentPercent">0%</span>
+                            </div>
+                            <div style="height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                                <div id="presentBar"
+                                    style="width: 0%; height: 100%; background: var(--success-color); transition: width 1s ease;">
+                                </div>
+                            </div>
+                            <p style="margin-top: 1rem; font-size: 0.825rem; color: var(--text-muted);">Based on today's
+                                logs.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Revenue Goal</h3>
+                            <span id="revenueValue" style="font-weight: 700; color: var(--primary-color);">$0</span>
+                        </div>
+                        <div style="padding: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Collected vs Target</span>
+                                <span id="feePercent">0%</span>
+                            </div>
+                            <div style="height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                                <div id="feeBar"
+                                    style="width: 0%; height: 100%; background: var(--primary-color); transition: width 1s ease;">
+                                </div>
+                            </div>
+                            <p style="margin-top: 1rem; font-size: 0.825rem; color: var(--text-muted);">Target: <span
+                                    id="revenueTarget">$0</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

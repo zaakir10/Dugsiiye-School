@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fees - School Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--text-muted);
+            background-color: #f9fafb;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .fee-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-paid {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-overdue {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-surface);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+            animation: scaleIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class='bx bxs-school'></i>
+                    <span>EduAdmin</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class='bx bxs-dashboard'></i> <span>Dashboard</span></a></li>
+                    <li><a href="students.html"><i class='bx bxs-graduation'></i> <span>Students</span></a></li>
+                    <li><a href="teachers.html"><i class='bx bxs-user-badge'></i> <span>Teachers</span></a></li>
+                    <li><a href="classes.html"><i class='bx bxs-book-open'></i> <span>Classes</span></a></li>
+                    <li><a href="subjects.html"><i class='bx bxs-book'></i> <span>Subjects</span></a></li>
+                    <li><a href="attendance.html"><i class='bx bxs-calendar-check'></i> <span>Attendance</span></a></li>
+                    <li><a href="exams.html"><i class='bx bxs-edit'></i> <span>Exams</span></a></li>
+                    <li><a href="results.html"><i class='bx bxs-bar-chart-alt-2'></i> <span>Results</span></a></li>
+                    <li><a href="fees.html" class="active"><i class='bx bxs-wallet'></i> <span>Fees</span></a></li>
+                    <li><a href="notices.html"><i class='bx bxs-megaphone'></i> <span>Notices</span></a></li>
+                    <li><a href="settings.html"><i class='bx bxs-cog'></i> <span>Settings</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" onclick="logout()" class="logout-btn"><i class='bx bx-log-out'></i> <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-navbar">
+                <div class="page-title">
+                    <h2>Fees Management</h2>
+                </div>
+                <div class="top-actions">
+                    <div class="search-bar">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="searchInput" placeholder="Search by student name...">
+                    </div>
+                    <button class="btn btn-primary" onclick="openModal()"><i class='bx bx-plus'></i> Record
+                        Payment</button>
+                    <button class="icon-btn" id="themeToggle"><i class='bx bx-moon'></i></button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin" alt="Profile" id="userAvatar">
+                        <div class="user-info">
+                            <span class="name" id="userName">Admin User</span>
+                            <span class="role" id="userRole">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper fade-in">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Fee Records</h3>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Class</th>
+                                    <th>Fee Type</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="feesTableBody">
+                                <!-- Rows will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="loading" style="text-align: center; padding: 2rem; display: none;">
+                        <i class='bx bx-loader-alt bx-spin' style="font-size: 2rem; color: var(--primary-color);"></i>
+                    </div>
+
+                    <div id="noData"
+                        style="text-align: center; padding: 2rem; display: none; color: var(--text-muted);">
+                        No fee records found.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Fee Modal -->
+    <div class="modal" id="feeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Record Payment</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="feeForm">
+                <input type="hidden" id="feeId">
+                <div class="form-group">
+                    <label class="form-label">Select Student</label>
+                    <select id="feeStudent" class="form-control" required>
+                        <option value="">Loading students...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Fee Type</label>
+                    <select id="feeType" class="form-control" required>
+                        <option value="Tuition">Tuition</option>
+                        <option value="Library">Library</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Exam">Exam</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" id="feeAmount" class="form-control" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" id="feeDate" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="feeStatus" class="form-control" required>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Record Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/fees.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects - School Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class='bx bxs-school'></i>
+                    <span>EduAdmin</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class='bx bxs-dashboard'></i> <span>Dashboard</span></a></li>
+                    <li><a href="students.html"><i class='bx bxs-graduation'></i> <span>Students</span></a></li>
+                    <li><a href="teachers.html"><i class='bx bxs-user-badge'></i> <span>Teachers</span></a></li>
+                    <li><a href="classes.html"><i class='bx bxs-book-open'></i> <span>Classes</span></a></li>
+                    <li><a href="subjects.html" class="active"><i class='bx bxs-book'></i> <span>Subjects</span></a>
+                    </li>
+                    <li><a href="attendance.html"><i class='bx bxs-calendar-check'></i> <span>Attendance</span></a></li>
+                    <li><a href="exams.html"><i class='bx bxs-edit'></i> <span>Exams</span></a></li>
+                    <li><a href="results.html"><i class='bx bxs-bar-chart-alt-2'></i> <span>Results</span></a></li>
+                    <li><a href="fees.html"><i class='bx bxs-wallet'></i> <span>Fees</span></a></li>
+                    <li><a href="notices.html"><i class='bx bxs-megaphone'></i> <span>Notices</span></a></li>
+                    <li><a href="settings.html"><i class='bx bxs-cog'></i> <span>Settings</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" onclick="logout()" class="logout-btn"><i class='bx bx-log-out'></i> <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-navbar">
+                <div class="page-title">
+                    <h2>Subjects Management</h2>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-primary" onclick="openModal()"><i class='bx bx-plus'></i> Add
+                        Subject</button>
+                    <button class="icon-btn" id="themeToggle"><i class='bx bx-moon'></i></button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin" alt="Profile" id="userAvatar">
+                        <div class="user-info">
+                            <span class="name" id="userName">Admin User</span>
+                            <span class="role" id="userRole">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper fade-in">
+                <!-- Stats & Search -->
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 2rem;">
+                        <div class="search-bar" style="flex: 1;">
+                            <i class='bx bx-search'></i>
+                            <input type="text" id="searchInput" placeholder="Search by name or code...">
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <div style="text-align: right;">
+                                <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">
+                                    Total Subjects</div>
+                                <div id="totalSubjectsCount"
+                                    style="font-size: 1.25rem; font-weight: 700; color: var(--primary-color);">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subjects Table -->
+                <div class="card">
+                    <div class="table-container">
+                        <table id="subjectsTable">
+                            <thead>
+                                <tr>
+                                    <th>Subject Name</th>
+                                    <th>Code</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subjectsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="loading" style="text-align: center; padding: 2rem; display: none;">
+                    <i class='bx bx-loader-alt bx-spin' style="font-size: 2rem; color: var(--primary-color);"></i>
+                </div>
+
+                <div id="noData" style="text-align: center; padding: 2rem; display: none; color: var(--text-muted);">
+                    No subjects found.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Subject Modal -->
+    <div class="modal" id="subjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Subject</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="subjectForm">
+                <input type="hidden" id="subjectId">
+
+                <div class="form-group">
+                    <label class="form-label">Subject Name</label>
+                    <input type="text" id="subjectName" class="form-control" placeholder="e.g. Mathematics" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Subject Code</label>
+                    <input type="text" id="subjectCode" class="form-control" placeholder="e.g. MATH101" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Type</label>
+                    <select id="subjectType" class="form-control" required>
+                        <option value="Theory">Theory</option>
+                        <option value="Practical">Practical</option>
+                        <option value="Lab">Lab</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Save Subject</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/subjects.js"></script>
+</body>
+
+</html>

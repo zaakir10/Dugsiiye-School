@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - School Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .settings-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .settings-nav {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .settings-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .settings-nav-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            color: var(--text-main);
+        }
+
+        .settings-nav-item.active {
+            background-color: rgba(79, 70, 229, 0.05);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .settings-content {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+        }
+
+        .settings-section {
+            display: none;
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        .settings-section h3 {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .settings-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class='bx bxs-school'></i>
+                    <span>EduAdmin</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class='bx bxs-dashboard'></i> <span>Dashboard</span></a></li>
+                    <li><a href="students.html"><i class='bx bxs-graduation'></i> <span>Students</span></a></li>
+                    <li><a href="teachers.html"><i class='bx bxs-user-badge'></i> <span>Teachers</span></a></li>
+                    <li><a href="classes.html"><i class='bx bxs-book-open'></i> <span>Classes</span></a></li>
+                    <li><a href="subjects.html"><i class='bx bxs-book'></i> <span>Subjects</span></a></li>
+                    <li><a href="attendance.html"><i class='bx bxs-calendar-check'></i> <span>Attendance</span></a></li>
+                    <li><a href="exams.html"><i class='bx bxs-edit'></i> <span>Exams</span></a></li>
+                    <li><a href="results.html"><i class='bx bxs-bar-chart-alt-2'></i> <span>Results</span></a></li>
+                    <li><a href="fees.html"><i class='bx bxs-wallet'></i> <span>Fees</span></a></li>
+                    <li><a href="notices.html"><i class='bx bxs-megaphone'></i> <span>Notices</span></a></li>
+                    <li><a href="settings.html" class="active"><i class='bx bxs-cog'></i> <span>Settings</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" onclick="logout()" class="logout-btn"><i class='bx bx-log-out'></i> <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-navbar">
+                <div class="page-title">
+                    <h2>Settings</h2>
+                </div>
+                <div class="top-actions">
+                    <button class="icon-btn" id="themeToggle"><i class='bx bx-moon'></i></button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin" alt="Profile" id="userAvatar">
+                        <div class="user-info">
+                            <span class="name" id="userName">Admin User</span>
+                            <span class="role" id="userRole">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper fade-in">
+                <div class="settings-container">
+                    <div class="settings-nav">
+                        <div class="settings-nav-item active" onclick="switchTab('general')">
+                            <i class='bx bx-hive'></i>
+                            <span>General</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="switchTab('profile')">
+                            <i class='bx bx-user'></i>
+                            <span>Profile</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="switchTab('account')">
+                            <i class='bx bx-lock'></i>
+                            <span>Account</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="switchTab('users')">
+                            <i class='bx bx-user-plus'></i>
+                            <span>System Users</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="switchTab('appearance')">
+                            <i class='bx bx-palette'></i>
+                            <span>Appearance</span>
+                        </div>
+                        <div class="settings-nav-item" onclick="switchTab('backup')">
+                            <i class='bx bx-data'></i>
+                            <span>Backup & Reset</span>
+                        </div>
+                    </div>
+
+                    <div class="settings-content">
+                        <!-- General Settings -->
+                        <div class="settings-section active" id="general">
+                            <h3>General School Settings</h3>
+                            <form id="generalForm">
+                                <div class="form-group">
+                                    <label class="form-label">School Name</label>
+                                    <input type="text" class="form-control" id="schoolName"
+                                        placeholder="e.g. EduAdmin Academy">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label">School Phone</label>
+                                        <input type="tel" class="form-control" id="schoolPhone"
+                                            placeholder="+123456789">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">School Email</label>
+                                        <input type="email" class="form-control" id="schoolEmail"
+                                            placeholder="contact@school.com">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                    <textarea class="form-control" id="schoolAddress" rows="2"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Current Academic Year</label>
+                                    <input type="text" class="form-control" id="academicYear" placeholder="2023-2024">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Settings</button>
+                            </form>
+                        </div>
+
+                        <!-- Profile Section -->
+                        <div class="settings-section" id="profile">
+                            <h3>Profile Settings</h3>
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="profileName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email (Display Only)</label>
+                                    <input type="email" class="form-control" id="profileEmail" readonly
+                                        style="background: #f3f4f6;">
+                                </div>
+
+                                <h4 style="margin: 1.5rem 0 1rem; color: var(--text-main);">Update Password</h4>
+                                <div class="form-group">
+                                    <label class="form-label">Current Password</label>
+                                    <input type="password" class="form-control"
+                                        placeholder="Required to change password">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label class="form-label">New Password</label>
+                                        <input type="password" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Confirm Password</label>
+                                        <input type="password" class="form-control">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </form>
+                        </div>
+
+                        <!-- Account Section (Permissions etc) -->
+                        <div class="settings-section" id="account">
+                            <h3>Account & Session</h3>
+                            <div class="card"
+                                style="box-shadow: none; border: 1px solid var(--border-color); margin-bottom: 2rem;">
+                                <p style="color: var(--text-muted); margin-bottom: 1rem;">Change your login security
+                                    settings or manage connected sessions.</p>
+                                <button class="btn btn-secondary" onclick="logout()">Logout From All Devices</button>
+                            </div>
+                        </div>
+
+                        <!-- System Users Section -->
+                        <div class="settings-section" id="users">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <h3>Manage System Users</h3>
+                                <button class="btn btn-primary" onclick="openUserModal()"><i class='bx bx-plus'></i> Add
+                                    User</button>
+                            </div>
+                            <div class="table-container"
+                                style="border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Role</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTableBody">
+                                        <!-- Populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Appearance Section -->
+                        <div class="settings-section" id="appearance">
+                            <h3>Appearance</h3>
+                            <div class="form-group">
+                                <label class="form-label">Sidebar Theme</label>
+                                <select class="form-control" onchange="Utils.showToast('Theme updated!', 'success')">
+                                    <option>Standard Dark</option>
+                                    <option>Vibrant Indigo</option>
+                                    <option>Minimal White</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Backup Section -->
+                        <div class="settings-section" id="backup">
+                            <h3>Data Management</h3>
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem;">Export Data</h4>
+                                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">
+                                        Download a backup of all school data including students, records, and settings.
+                                    </p>
+                                    <button class="btn btn-secondary" onclick="exportData()"><i
+                                            class='bx bx-download'></i> Export JSON</button>
+                                </div>
+                                <hr style="border: none; border-top: 1px solid var(--border-color);">
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem;">Import Data</h4>
+                                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">
+                                        Upload a previously exported JSON file to restore data.</p>
+                                    <input type="file" id="importInput" style="display: none;"
+                                        onchange="importData(this)" accept=".json">
+                                    <button class="btn btn-secondary"
+                                        onclick="document.getElementById('importInput').click()"><i
+                                            class='bx bx-upload'></i> Import JSON</button>
+                                </div>
+                                <hr style="border: none; border-top: 1px solid var(--border-color);">
+                                <div
+                                    style="padding: 1.5rem; background: rgba(239, 68, 68, 0.05); border-radius: var(--radius-md); border: 1px solid rgba(239, 68, 68, 0.2);">
+                                    <h4 style="color: var(--danger-color); margin-bottom: 0.5rem;">Factory Reset</h4>
+                                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">
+                                        Permanently delete all data and reset the system to default states. This cannot
+                                        be undone.</p>
+                                    <button class="btn" style="background: var(--danger-color); color: white;"
+                                        onclick="resetSystem()">Reset Everything</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="userModalTitle">Add New User</h3>
+                <button class="close-modal" onclick="closeUserModal()">&times;</button>
+            </div>
+            <form id="userForm">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="userFullName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="userEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select id="userRoleSelect" class="form-control" required>
+                        <option value="admin">Admin</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="student">Student</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="userPassword" class="form-control"
+                        placeholder="Leave blank to keep current (if editing)">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Save User</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+
+</html>

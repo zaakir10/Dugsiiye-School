@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notices - School Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .notices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .notice-card {
+            background-color: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .notice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .notice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notice-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tag-general {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .tag-urgent {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag-event {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .notice-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .notice-content {
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .notice-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-surface);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+            animation: scaleIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class='bx bxs-school'></i>
+                    <span>EduAdmin</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class='bx bxs-dashboard'></i> <span>Dashboard</span></a></li>
+                    <li><a href="students.html"><i class='bx bxs-graduation'></i> <span>Students</span></a></li>
+                    <li><a href="teachers.html"><i class='bx bxs-user-badge'></i> <span>Teachers</span></a></li>
+                    <li><a href="classes.html"><i class='bx bxs-book-open'></i> <span>Classes</span></a></li>
+                    <li><a href="subjects.html"><i class='bx bxs-book'></i> <span>Subjects</span></a></li>
+                    <li><a href="attendance.html"><i class='bx bxs-calendar-check'></i> <span>Attendance</span></a></li>
+                    <li><a href="exams.html"><i class='bx bxs-edit'></i> <span>Exams</span></a></li>
+                    <li><a href="results.html"><i class='bx bxs-bar-chart-alt-2'></i> <span>Results</span></a></li>
+                    <li><a href="fees.html"><i class='bx bxs-wallet'></i> <span>Fees</span></a></li>
+                    <li><a href="notices.html" class="active"><i class='bx bxs-megaphone'></i> <span>Notices</span></a>
+                    </li>
+                    <li><a href="settings.html"><i class='bx bxs-cog'></i> <span>Settings</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" onclick="logout()" class="logout-btn"><i class='bx bx-log-out'></i> <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-navbar">
+                <div class="page-title">
+                    <h2>Notices & Announcements</h2>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-primary" onclick="openModal()"><i class='bx bx-plus'></i> Post
+                        Notice</button>
+                    <button class="icon-btn" id="themeToggle"><i class='bx bx-moon'></i></button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin" alt="Profile" id="userAvatar">
+                        <div class="user-info">
+                            <span class="name" id="userName">Admin User</span>
+                            <span class="role" id="userRole">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper fade-in">
+                <div id="loading" style="text-align: center; padding: 3rem; display: none;">
+                    <i class='bx bx-loader-alt bx-spin' style="font-size: 3rem; color: var(--primary-color);"></i>
+                </div>
+
+                <div id="noData" style="text-align: center; padding: 3rem; display: none; color: var(--text-muted);">
+                    <i class='bx bx-megaphone' style="font-size: 4rem; opacity: 0.2; margin-bottom: 1rem;"></i>
+                    <p>No notices found. Post a new announcement to get started.</p>
+                </div>
+
+                <div class="notices-grid" id="noticesGrid">
+                    <!-- Notices will be populated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Post Notice Modal -->
+    <div class="modal" id="noticeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Post New Notice</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="noticeForm">
+                <div class="form-group">
+                    <label class="form-label">Notice Title</label>
+                    <input type="text" id="noticeTitle" class="form-control" placeholder="e.g. School Holiday" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select id="noticeCategory" class="form-control" required>
+                        <option value="General">General</option>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Event">Event</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Content</label>
+                    <textarea id="noticeContent" class="form-control" rows="5" placeholder="Enter notice details..."
+                        required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Post Notice</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/notices.js"></script>
+</body>
+
+</html>

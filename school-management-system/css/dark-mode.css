@@ -1,0 +1,60 @@
+/* Dark Mode Overrides */
+body.dark-mode {
+    --bg-body: #0f172a;
+    --bg-surface: #1e293b;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --bg-sidebar: #0f172a;
+}
+
+body.dark-mode .card {
+    background-color: var(--bg-surface);
+    box-shadow: none;
+    border: 1px solid var(--border-color);
+}
+
+body.dark-mode .top-navbar {
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+}
+
+body.dark-mode .form-control {
+    background-color: var(--bg-body);
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+body.dark-mode .search-bar input {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+}
+
+body.dark-mode .action-btn {
+    background-color: var(--bg-surface);
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+body.dark-mode .action-btn:hover {
+    background-color: #312e81;
+    border-color: var(--primary-color);
+}
+
+body.dark-mode table {
+    color: var(--text-main);
+}
+
+body.dark-mode th {
+    background-color: var(--bg-body);
+    color: var(--text-muted);
+}
+
+body.dark-mode tr {
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-mode .modal-content {
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+}

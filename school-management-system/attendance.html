@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - School Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .attendance-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .attendance-controls>* {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .student-attendance-card {
+            background-color: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            padding: 1rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .student-attendance-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+            object-fit: cover;
+        }
+
+        .attendance-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-attendance {
+            flex: 1;
+            padding: 0.5rem 0.25rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .btn-present.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .btn-absent.active {
+            background-color: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
+        }
+
+        .btn-late.active {
+            background-color: var(--warning-color);
+            color: white;
+            border-color: var(--warning-color);
+        }
+
+        .btn-bulk {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: white;
+            transition: var(--transition);
+        }
+
+        .btn-bulk:hover {
+            background: #f3f4f6;
+        }
+
+        .btn-attendance:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class='bx bxs-school'></i>
+                    <span>EduAdmin</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class='bx bxs-dashboard'></i> <span>Dashboard</span></a></li>
+                    <li><a href="students.html"><i class='bx bxs-graduation'></i> <span>Students</span></a></li>
+                    <li><a href="teachers.html"><i class='bx bxs-user-badge'></i> <span>Teachers</span></a></li>
+                    <li><a href="classes.html"><i class='bx bxs-book-open'></i> <span>Classes</span></a></li>
+                    <li><a href="subjects.html"><i class='bx bxs-book'></i> <span>Subjects</span></a></li>
+                    <li><a href="attendance.html" class="active"><i class='bx bxs-calendar-check'></i>
+                            <span>Attendance</span></a></li>
+                    <li><a href="exams.html"><i class='bx bxs-edit'></i> <span>Exams</span></a></li>
+                    <li><a href="results.html"><i class='bx bxs-bar-chart-alt-2'></i> <span>Results</span></a></li>
+                    <li><a href="fees.html"><i class='bx bxs-wallet'></i> <span>Fees</span></a></li>
+                    <li><a href="notices.html"><i class='bx bxs-megaphone'></i> <span>Notices</span></a></li>
+                    <li><a href="settings.html"><i class='bx bxs-cog'></i> <span>Settings</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" onclick="logout()" class="logout-btn"><i class='bx bx-log-out'></i> <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-navbar">
+                <div class="page-title">
+                    <h2>Attendance</h2>
+                </div>
+                <div class="top-actions">
+                    <button class="icon-btn" id="themeToggle"><i class='bx bx-moon'></i></button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin" alt="Profile" id="userAvatar">
+                        <div class="user-info">
+                            <span class="name" id="userName">Admin User</span>
+                            <span class="role" id="userRole">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper fade-in">
+                <div class="card">
+                    <div class="attendance-controls">
+                        <div class="form-group" style="margin: 0;">
+                            <label class="form-label">Select Class</label>
+                            <select id="classSelect" class="form-control">
+                                <option value="">Choose a class</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin: 0;">
+                            <label class="form-label">Date</label>
+                            <input type="date" id="attendanceDate" class="form-control">
+                        </div>
+
+                        <div style="display: flex; align-items: flex-end; gap: 0.5rem;">
+                            <button class="btn btn-primary" onclick="loadAttendance()">Load</button>
+                        </div>
+                    </div>
+
+                    <div id="initialState" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                        <i class='bx bx-calendar-check' style="font-size: 3rem; opacity: 0.3;"></i>
+                        <p>Select a class and date to mark attendance</p>
+                    </div>
+
+                    <div id="loading" style="text-align: center; padding: 2rem; display: none;">
+                        <i class='bx bx-loader-alt bx-spin' style="font-size: 2rem; color: var(--primary-color);"></i>
+                    </div>
+
+                    <div id="attendanceContent" style="display: none;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                            <h4 id="attendanceLegend">Students List</h4>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn-bulk" onclick="markAll('present')"><i class='bx bx-check-double'></i>
+                                    Mark All Present</button>
+                                <button class="btn-bulk" onclick="markAll('absent')"><i class='bx bx-x'></i> Mark All
+                                    Absent</button>
+                            </div>
+                        </div>
+                        <div class="students-grid" id="studentsGrid">
+                            <!-- Students will be populated here -->
+                        </div>
+
+                        <div style="margin-top: 2rem; text-align: right;">
+                            <button class="btn btn-primary" onclick="saveAttendance()">
+                                <i class='bx bx-save'></i> Save Attendance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/attendance.js"></script>
+</body>
+
+</html>

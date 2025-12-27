@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - School Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: var(--bg-surface);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dropdown-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-mini-card {
+            background: var(--bg-surface);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border-top: 3px solid var(--primary-color);
+        }
+
+        .stat-mini-card .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-mini-card .value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .table-container {
+            background: var(--bg-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .marks-input {
+            width: 80px !important;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .grade-cell {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .results-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            background: var(--bg-surface);
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        #resultsArea {
+            animation: fadeIn 0.4s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class='bx bxs-school'></i>
+                    <span>EduAdmin</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class='bx bxs-dashboard'></i> <span>Dashboard</span></a></li>
+                    <li><a href="students.html"><i class='bx bxs-graduation'></i> <span>Students</span></a></li>
+                    <li><a href="teachers.html"><i class='bx bxs-user-badge'></i> <span>Teachers</span></a></li>
+                    <li><a href="classes.html"><i class='bx bxs-book-open'></i> <span>Classes</span></a></li>
+                    <li><a href="subjects.html"><i class='bx bxs-book'></i> <span>Subjects</span></a></li>
+                    <li><a href="attendance.html"><i class='bx bxs-calendar-check'></i> <span>Attendance</span></a></li>
+                    <li><a href="exams.html"><i class='bx bxs-edit'></i> <span>Exams</span></a></li>
+                    <li><a href="results.html" class="active"><i class='bx bxs-bar-chart-alt-2'></i>
+                            <span>Results</span></a></li>
+                    <li><a href="fees.html"><i class='bx bxs-wallet'></i> <span>Fees</span></a></li>
+                    <li><a href="notices.html"><i class='bx bxs-megaphone'></i> <span>Notices</span></a></li>
+                    <li><a href="settings.html"><i class='bx bxs-cog'></i> <span>Settings</span></a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" onclick="logout()" class="logout-btn"><i class='bx bx-log-out'></i> <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-navbar">
+                <div class="page-title">
+                    <h2>Academic Results</h2>
+                </div>
+                <div class="top-actions">
+                    <button class="icon-btn" id="themeToggle"><i class='bx bx-moon'></i></button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin" alt="Profile" id="userAvatar">
+                        <div class="user-info">
+                            <span class="name" id="userName">Admin User</span>
+                            <span class="role" id="userRole">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper fade-in">
+                <!-- Exam Selection -->
+                <div class="results-header">
+                    <div class="dropdown-group">
+                        <label class="form-label" style="margin:0">Select Exam:</label>
+                        <select id="examSelect" class="form-control" style="width: auto; min-width: 300px;"
+                            onchange="loadExamResults()">
+                            <option value="">Choose an exam...</option>
+                        </select>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-secondary" onclick="exportResults()"><i class='bx bx-export'></i>
+                            Export CSV</button>
+                    </div>
+                </div>
+
+                <!-- Initial State -->
+                <div id="noData" style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                    <i class='bx bx-bar-chart-alt-2' style="font-size: 4rem; opacity: 0.1; margin-bottom: 1rem;"></i>
+                    <p>Select an exam above to manage student results</p>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading" style="text-align: center; padding: 3rem; display: none;">
+                    <i class='bx bx-loader-alt bx-spin' style="font-size: 3rem; color: var(--primary-color);"></i>
+                </div>
+
+                <!-- Results Main Area -->
+                <div id="resultsArea" style="display: none;">
+                    <h3 id="tableTitle" style="margin-bottom: 1.5rem; color: var(--text-main);">Exam Results</h3>
+
+                    <div class="stats-summary">
+                        <div class="stat-mini-card">
+                            <span class="label">Class Average</span>
+                            <span class="value" id="statAverage">-</span>
+                        </div>
+                        <div class="stat-mini-card" style="border-top-color: var(--secondary-color);">
+                            <span class="label">Highest Mark</span>
+                            <span class="value" id="statHigh">-</span>
+                        </div>
+                        <div class="stat-mini-card" style="border-top-color: var(--info-color);">
+                            <span class="label">Pass Rate</span>
+                            <span class="value" id="statPass">-</span>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 100px;">Roll No</th>
+                                    <th>Student Name</th>
+                                    <th style="width: 150px;">Marks (0-100)</th>
+                                    <th style="width: 100px;">Grade</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+
+                        <div class="results-actions">
+                            <button class="btn btn-primary" onclick="saveResults()">
+                                <i class='bx bx-save'></i> Save All Results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/results.js"></script>
+</body>
+
+</html>
