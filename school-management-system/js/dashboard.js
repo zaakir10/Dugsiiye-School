@@ -1,6 +1,9 @@
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize Responsive Elements
+    initResponsiveLayout();
+
     // Initialize Dashboard Stats (only if on dashboard)
     if (document.getElementById('totalStudents')) {
         initDashboard();
@@ -9,16 +12,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Load User Info (runs on all pages)
     loadUserInfo();
     loadSystemSettings();
-
-    // Sidebar Toggle
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('sidebar');
-
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-    }
 
     // Theme Toggle
     const themeToggle = document.getElementById('themeToggle');
@@ -38,10 +31,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Check saved theme
         if (localStorage.getItem('sms_theme') === 'dark') {
             document.body.classList.add('dark-mode');
-            themeToggle.querySelector('i').classList.replace('bx-moon', 'bx-sun');
+            const icon = themeToggle.querySelector('i');
+            if (icon) icon.classList.replace('bx-moon', 'bx-sun');
         }
     }
 });
+
+function initResponsiveLayout() {
+    const sidebar = document.getElementById('sidebar');
+    const topNavbar = document.querySelector('.top-navbar');
+
+    if (!sidebar || !topNavbar) return;
+
+    // Create Mobile Toggle Button
+    const mobileToggle = document.createElement('button');
+    mobileToggle.className = 'mobile-toggle';
+    mobileToggle.innerHTML = "<i class='bx bx-menu'></i>";
+    mobileToggle.id = 'mobileToggle';
+
+    // Insert at the beginning of top-navbar
+    topNavbar.prepend(mobileToggle);
+
+    // Create Overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    overlay.id = 'sidebarOverlay';
+    document.body.appendChild(overlay);
+
+    const toggleSidebar = () => {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+
+        // Toggle Icon
+        const icon = mobileToggle.querySelector('i');
+        if (sidebar.classList.contains('active')) {
+            icon.classList.replace('bx-menu', 'bx-x');
+        } else {
+            icon.classList.replace('bx-x', 'bx-menu');
+        }
+    };
+
+    mobileToggle.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
+
+    // Also handle the existing sidebarToggle if it exists
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', toggleSidebar);
+    }
+}
 
 async function initDashboard() {
     try {
