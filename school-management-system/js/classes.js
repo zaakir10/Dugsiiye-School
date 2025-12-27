@@ -1,6 +1,3 @@
-/**
- * Classes Management Logic
- */
 
 document.addEventListener('DOMContentLoaded', () => {
     loadClasses();
