@@ -104,7 +104,7 @@ const API = {
         }
 
         if (user) {
-            // Create session
+            // Create sessions
             const session = {
                 token: 'mock-jwt-token-' + Date.now(),
                 user: { id: user.id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
