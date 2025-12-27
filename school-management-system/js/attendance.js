@@ -1,7 +1,3 @@
-/**
- * Attendance Logic
- */
-
 document.addEventListener('DOMContentLoaded', () => {
     // Set default date to today
     const dateInput = document.getElementById('attendanceDate');
@@ -75,7 +71,7 @@ async function loadAttendance() {
         }
 
         students.forEach(student => {
-            const status = existingRecord[student.id] || ''; // Empty if not marked
+            const status = existingRecord[student.id] || ''; // Empty if not marke
 
             const card = document.createElement('div');
             card.className = 'student-attendance-card';
