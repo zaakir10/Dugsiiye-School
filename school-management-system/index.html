@@ -47,17 +47,23 @@
         }
 
         .brand-logo {
-            width: 60px;
-            height: 60px;
-            background: var(--primary-color);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 120px;
+            height: auto;
+            display: block;
             margin: 0 auto 1rem;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+                border-radius: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -66,7 +72,7 @@
 
     <div class="login-card fade-in">
         <div class="login-header">
-            <div class="brand-logo">DGS</div>
+            <div class="brand-logo"><img src="img/image.png" alt="Dugsiye logo"></div>
             <h1>Welcome Back</h1>
             <p>Sign in to access your dashboard</p>
         </div>
