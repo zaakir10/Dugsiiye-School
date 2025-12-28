@@ -62,13 +62,14 @@
             background: var(--bg-surface);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
-            overflow: hidden;
+            overflow-x: auto;
             margin-bottom: 2rem;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 700px;
         }
 
         th,
@@ -105,8 +106,29 @@
             border-top: 1px solid var(--border-color);
         }
 
-        #resultsArea {
-            animation: fadeIn 0.4s ease-out;
+        @media (max-width: 768px) {
+            .results-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1.5rem;
+            }
+
+            .dropdown-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #examSelect {
+                min-width: 100% !important;
+            }
+
+            .results-actions {
+                justify-content: center;
+            }
+
+            .results-actions .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -118,7 +140,7 @@
             <div class="sidebar-header">
                 <div class="logo">
                     <i class='bx bxs-school'></i>
-                    <span>EduAdmin</span>
+                    <span>Dugsiye</span>
                 </div>
                 <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
             </div>
