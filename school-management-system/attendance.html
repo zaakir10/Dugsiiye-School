@@ -25,7 +25,7 @@
 
         .students-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 1rem;
         }
 
@@ -100,9 +100,14 @@
             background: #f3f4f6;
         }
 
-        .btn-attendance:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
+        @media (max-width: 480px) {
+            .students-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .attendance-controls>* {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
@@ -114,7 +119,7 @@
             <div class="sidebar-header">
                 <div class="logo">
                     <i class='bx bxs-school'></i>
-                    <span>EduAdmin</span>
+                    <span>Dugsiye</span>
                 </div>
                 <button id="sidebarToggle" class="sidebar-toggle"><i class='bx bx-menu'></i></button>
             </div>
